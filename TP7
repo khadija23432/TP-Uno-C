@@ -1,7 +1,7 @@
 import random
 
 COLORS = ["R", "G", "B", "Y", "P", "W"]
-CODE_LENGTH = 3
+CODE_LENGTH = 4
 MAX_TRIES = 12
 
 
