@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
+#include <stdlib.h>
 
 typedef struct {
     char symbole[3]; // +2, JJ...
@@ -46,14 +47,14 @@ void initialiser_paquet(carte paquet[])
 {
     char couleurs[] = {'R', 'V', 'J', 'B'};
     char symbole[3];
-    int i, j, n, k = 0;
+    int i, j, n, k = 0; // i pour les couleurs j pour les nb et n pour exmplaire 
 
     // Créer un zéro pour chaque couleur
     for (i = 0; i < 4; i++)
     {
-        sprintf(symbole, "%d", 0);
+        sprintf(symbole, "%d", 0); // convertir un nb en caractere 
         paquet[k] = creer_carte(symbole, couleurs[i]);
-        k++;
+        k++;    
     }
 
     // Créer les cartes de 1 à 9 pour chaque couleur
@@ -103,7 +104,7 @@ void initialiser_paquet(carte paquet[])
 // Créer les 4 cartes JJ noires
 for (n = 0; n < 4; n++)
 {
-    paquet[k] = creer_carte("JJ", 'N');
+    paquet[k] = creer_carte("JJ", 'N'); // un exemplaire de carte JJ en noir
     k++;
 }
 
@@ -115,9 +116,46 @@ for (n = 0; n < 4; n++)
 }
 printf("Nombre de cartes : %d\n", k);
 }
+void melanger_le_paquet(carte paquet[])
+{
+    int i, j;
+    carte a;
 
+    for (i = 0; i < 108; i++)
+    {
+        j = rand() % 108; // Générer un index aléatoire entre 0 et 107
+        a = paquet[i];
+        paquet[i] = paquet[j];
+        paquet[j] = a;
+    }
+}
 
+void distribuer_cartes(carte paquet[])
+{
+    int i, j, k = 0;
 
+    carte mains[7][2]; // un tableau à deux dimensions 7 lignes pour les 7 cartes et 2 colonnes pour les 2 joueurs.
+
+    for (i = 0; i < 2; i++) // 2 joueurs
+    {
+
+        printf("Joueur %d : ", i + 1); 
+
+        for (j = 0; j < 7; j++) 
+        {
+            mains[j][i] = paquet[k]; // copie une carte du paquet dans la main du joueur.
+
+            printf("%s%c ", mains[j][i].symbole, mains[j][i].couleur);//  affiche le symbole et la couleur de la carte.
+
+            k++;
+        }
+        printf("\n");
+    }
+}
+void afficher_premiere_carte(carte paquet[])
+{
+    printf("Premiere carte sur la table : %s %c\n", paquet[14].symbole, paquet[14].couleur);
+}
 
 
 
@@ -143,5 +181,8 @@ int main()
         printf("Carte invalide !");
     }
  initialiser_paquet(paquet);
+ melanger_le_paquet(paquet);
+ distribuer_cartes(paquet);
+ afficher_premiere_carte(paquet);
     return 0;
 }
